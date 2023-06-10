@@ -9,42 +9,44 @@ from eralchemy2 import render_er
 
 Base = declarative_base()
 
-class User(Base):
-    __tablename__ = 'user'
+class Personaje(Base):
+    __tablename__ = 'personaje'
+    id = Column(Integer, primary_key=True)
+    name = Column(String(250), nullable=False)
+    birth_year = Column(String(250), nullable=False)
+    gender = Column(String(250), nullable=False)
+    # favorito = relationship(Favorito)
+
+class Planeta(Base):
+    __tablename__ = 'planeta'
+    id = Column(Integer, primary_key=True)
+    name = Column(String(250), nullable=False)
+    terrain = Column(String(250), nullable=False)
+    climate = Column(String(250), nullable=False)
+    # favorito = relationship(Favorito)
+class Usuario(Base):
+    __tablename__ = 'usuario'
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False)
     email = Column(String(250), nullable=False)
     password = Column(String(250), nullable=False)
-    id_favorites = Column(Integer, ForeignKey('favorites.id'))
+    
 
-class Favorites(Base):
-    __tablename__ = 'favorites'
+class Favorito(Base):
+    __tablename__ = 'favorito'
     id = Column(Integer, primary_key=True)
-    id_planet = Column(Integer, ForeignKey('planets.id'))
-    name_planet = Column(String(250), nullable=False)
-    id_people = Column(Integer, ForeignKey('people.id'))
-    name_people = Column(String(250), nullable=False)
-    user = relationship(User)
+    id_planeta = Column(Integer, ForeignKey('planeta.id'))
+    name_planeta = Column(String(250), nullable=False)
+    id_personaje = Column(Integer, ForeignKey('personaje.id'))
+    name_personaje = Column(String(250), nullable=False)
+    id_favorito = Column(Integer, ForeignKey('usuario.id'))
+    
 
-class People(Base):
-    __tablename__ = 'people'
-    id = Column(Integer, primary_key=True)
-    name_people = Column(String(250), nullable=False)
-    height = Column(String(250), nullable=False)
-    mass = Column(String(250), nullable=False)
-    hair_color = Column(String(250), nullable=False)
-    skin_color = Column(String(250), nullable=False)
-    birth_year = Column(String(250), nullable=False)
-    gender = Column(String(250), nullable=False)
-    favorites = relationship(Favorites)
 
-class Planets(Base):
-    __tablename__ = 'planets'
-    id = Column(Integer, primary_key=True)
-    name_planet = Column(String(250), nullable=False)
-    terrain = Column(String(250), nullable=False)
-    climate = Column(String(250), nullable=False)
-    favorites = relationship(Favorites)
+
+
+
+
 
     def to_dict(self):
         return {}
